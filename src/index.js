@@ -14,16 +14,40 @@ console.log(fxrand()) // deterministic PRNG function, use it instead of Math.ran
 // More about it in the guide, section features:
 // [https://fxhash.xyz/articles/guide-mint-generative-token#features]
 //
-// window.$fxhashFeatures = {
-//   "Background": "Black",
-//   "Number of lines": 10,
-//   "Inverted": true
-// }
+
+function Pattern(pattern) {
+  if (pattern < 0.2) return "low"
+  if (pattern <= 0.8) return "medium"
+  else return "high"
+}
+
+function Zaxis(zoff) {
+  if (zoff > 1) return "low"
+  if (zoff < 0.8) return "medium"
+  else return "high"
+}
+
+function Colors(fill) {
+  if (fill < 0.1) return "high"
+  if (fill < 0.3) return "medium"
+  else return "low"
+}
+
+
+window.$fxhashFeatures = {
+  "Zaxis": Zaxis(fxrand()),
+  "Pattern": Pattern(fxrand()),
+  "Colors": Colors(fxrand()),
+
+}
 
 // this code writes the values to the DOM as an example
 const container = document.createElement("div")
 container.innerText = `
   random hash: ${fxhash}\n
   some pseudo random values: [ ${fxrand()}, ${fxrand()}, ${fxrand()}, ${fxrand()}, ${fxrand()},... ]\n
+  zoff: ${window.$fxhashFeatures["Zaxis"]}
+  cols: ${window.$fxhashFeatures["Pattern"]}
+  fill: ${window.$fxhashFeatures["Colors"]}
 `
 document.body.prepend(container)
