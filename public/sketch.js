@@ -5,7 +5,6 @@
 
 
 
-let x = 0;
 var cols = 48;
 var rows = 48;
 let phase = 100;
@@ -14,18 +13,24 @@ let xoff = 0;
 let noiseScale = 0.1;
 let yoff = 0.0;
 let noiseMax = 5;
+let c = color(255, 204, 0);
+let redValue = red(c)
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
 
-  fxseed=int(1e8*fxrand(),fill(fxrand()*220, fxrand()*108, fxrand()*164)),
+  fxseed=int(1e8*fxrand(),fill(fxrand()*220, fxrand()*72, fxrand()*24),),
   fxseed2=int(4*fxrand(), fill(random(225,128, 220))),
-  pattern=int(24*fxrand(), stroke(random(24,16*fxrand()), rect(fxrand()*(210, 128, 100),128, 108)))
+  pattern=int(24*fxrand(), stroke(random(24,16*fxrand()), rect(fxrand()*(210, 128, 100),64/alpha, 16*noiseScale)))
+  alpha=int(fxrand(color(0.4*pattern, 250*fxrand(), random(128,72,128), fxrand()*102)));
+  magenta=int(fxrand(fill(random(225,72,16))),stroke(fxrand*124, fill(255,128,fxrand()*64)));
+  red=int(128*fxrand(),fill(255, 204, 0));
+  blue=int(1e8*fxrand(),fill(random(255*red),random(128),random(255))*map(windowWidth,100,0,23,noiseMax))
 
 }
 
 function draw() {
-  background(fxseed2*random(220), fxseed*random(140), pattern*random(128) );
+  background(pattern*random(noiseMax*220,128,22+alpha), fxseed*random(140,alpha,264), pattern*random(128) );
 
   beginShape();
 
@@ -34,12 +39,12 @@ function draw() {
 
     for (var j = 0; j < rows; j++) {
       var x = random(
-        (i * windowWidth/6) / random(fxseed2, 24),
-        (i * windowWidth/6) / random(fxseed2, 48) + noiseScale
+        (i * windowWidth/6+fxseed2) / random(fxseed2, 24+magenta*noiseMax),
+        (i * windowWidth/6+fxseed2) / random(fxseed2, 48) + noiseScale
       );
       var y = random(
-        ((j+fxseed2) * windowHeight) / random(16, 24),
-        ((j+fxseed2) * windowHeight) / random(32, 48) + noiseMax
+        ((j*fxseed2) * windowHeight+red) / blue*random(16/red, 24*magenta),
+        ((j+fxseed2) * windowHeight+red) / random(32, 48*(magenta*noiseMax)) + noiseMax
       );
       
 
@@ -62,37 +67,37 @@ function draw() {
     }
 
       let noiseVal = noise(
-        (mouseX * map(xoff, yoff, zoff, 1, 100, 128) + x) * noiseScale,
-        mouseY * noiseScale
+        (fxseed*map(alpha, pattern, fxseed2, 1, 100, 128) + x) * noiseScale,
+        alpha* noiseScale
       );
 
       stroke(
-        random(mouseY +fxseed2 * noiseVal + 1080 / mouseX + pattern + noiseVal * 1080) / 2,
-        random(noiseVal * 255),
-        random(pattern*128 * x)
+        alpha*random(2220+random(128,alpha*128,64) +fxseed2 * noiseVal + 1080 / mouseX + pattern + noiseVal * 1080) / 2,
+        random(noiseVal * alpha+128),
+        random(pattern*128 - 128*alpha )
       );
 
       rect(
-        ((x / noiseVal) * noiseMax) / 2,
+        ((x / noiseVal) * log(noiseMax+pattern, alpha, 10/magenta, 16)) / 2,
          (y * noiseVal + noiseMax),
-        1080+fxseed2*fxrand(),
-        1080+pattern,
+        1080+fxseed2*map(windowWidth+fxseed2,red*72,10/noiseVal,alpha,noiseVal+alpha),
+        1080+pattern*fxseed2,
       );
-      //colormode(fxrand)
-      fill(fxseed2+108 / noiseVal*fxseed), fxseed*55, pattern*108;
+
+      fill(random(random(fxseed2+108 / noiseVal*fxseed), alpha*random(255,128,fxseed2), pattern*108+red),255*magenta, random(255,64,70)*alpha);
       rectMode(CENTER);
 
       strokeWeight(
-        map(noiseVal, windowWidth / 100, windowHeight * 120, random(220), 255) *
+        map(noiseVal+red, windowWidth / 100, windowHeight * 120, random(220), 255) *
           2
       );
 
-      xoff += 0.15;
-      zoff += 0.2;
+      //xoff += 0.15;
+      //zoff += 0.2;
     }
   }
 
-  yoff += 0.01;
+  //yoff += 0.01;
   vertex(windowWidth*fxseed, windowHeight);
   endShape(CLOSE);
 }

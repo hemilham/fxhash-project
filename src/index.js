@@ -35,9 +35,7 @@ function Colors(fill) {
 
 
 window.$fxhashFeatures = {
-  "Zaxis": Zaxis(fxrand()),
-  "Pattern": Pattern(fxrand()),
-  "Colors": Colors(fxrand()),
+
 
 }
 
@@ -46,8 +44,6 @@ const container = document.createElement("div")
 container.innerText = `
   random hash: ${fxhash}\n
   some pseudo random values: [ ${fxrand()}, ${fxrand()}, ${fxrand()}, ${fxrand()}, ${fxrand()},... ]\n
-  zoff: ${window.$fxhashFeatures["Zaxis"]}
-  cols: ${window.$fxhashFeatures["Pattern"]}
-  fill: ${window.$fxhashFeatures["Colors"]}
+
 `
 document.body.prepend(container)
